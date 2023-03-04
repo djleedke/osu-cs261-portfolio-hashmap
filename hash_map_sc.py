@@ -194,9 +194,25 @@ class HashMap:
 
     def get(self, key: str):
         """
-        TODO: Write this implementation
+        This method returns the value associated with the given key.  If the
+        key is not in the hash map, the method returns None.
         """
-        pass
+    
+        # Hashing the key to get the index inside our current capacity
+        hash = self._hash_function(key)
+        index = hash % self._capacity
+
+        # Reference to the bucket the key should be in
+        bucket = self._buckets[index]
+        
+        # Iterating the linked list to check for the key
+        for node in bucket:
+
+            # Key found, return value
+            if(node.key == key):
+                return node.value
+            
+        return None
 
     def contains_key(self, key: str) -> bool:
         """
@@ -218,12 +234,18 @@ class HashMap:
         
         return False
 
-
     def remove(self, key: str) -> None:
         """
-        TODO: Write this implementation
+        Removes the given key and its associated value from the hash map.
+        If the key is not in the hash map, the method will do nothing.
         """
-        pass
+
+        # Getting index & bucket reference
+        hash = self._hash_function(key) % self._capacity
+        index = hash % self._capacity
+        bucket = self._buckets[index]
+
+        bucket.remove(key)
 
     def get_keys_and_values(self) -> DynamicArray:
         """
@@ -302,7 +324,6 @@ if __name__ == "__main__":
         if i % 10 == 0:
             print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
-    '''
     print("\nPDF - clear example 1")
     print("---------------------")
     m = HashMap(101, hash_function_1)
@@ -327,7 +348,6 @@ if __name__ == "__main__":
     m.clear()
     print(m.get_size(), m.get_capacity())
 
-    '''
     print("\nPDF - resize example 1")
     print("----------------------")
     m = HashMap(23, hash_function_1)
@@ -403,7 +423,7 @@ if __name__ == "__main__":
         # NOT inserted keys must be absent
         result &= not m.contains_key(str(key + 1))
     print(result)
-
+    '''
     print("\nPDF - remove example 1")
     print("----------------------")
     m = HashMap(53, hash_function_1)
@@ -413,7 +433,7 @@ if __name__ == "__main__":
     m.remove('key1')
     print(m.get('key1'))
     m.remove('key4')
-
+    '''
     print("\nPDF - get_keys_and_values example 1")
     print("------------------------")
     m = HashMap(11, hash_function_2)
