@@ -95,15 +95,12 @@ class HashMap:
         if(self.table_load() >= 1):
             self.resize_table(self._capacity * 2)
         
-        self._size += 1
-
         # Hashing the key to get the index inside our current capacity
         hash = self._hash_function(key)
         index = hash % self._capacity
 
         # Reference to the bucket the key should be in
         bucket = self._buckets[index]
-        
         
         found = False
 
@@ -114,12 +111,12 @@ class HashMap:
             if(node.key == key):
                 found = True
                 node.value = value
-                self._size -= 1
                 break
 
         # Key not found inserting into bucket
         if found == False:
             bucket.insert(key, value)
+            self._size += 1
 
 
     def empty_buckets(self) -> int:
