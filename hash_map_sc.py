@@ -90,7 +90,7 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        print("put")
+
         # Checking for resize
         if(self.table_load() >= 1):
             self.resize_table(self._capacity * 2)
@@ -98,10 +98,12 @@ class HashMap:
         self._size += 1
 
         # Hashing the key to get the index inside our current capacity
-        index = self._hash_function(key) % self._capacity
+        hash = self._hash_function(key)
+        index = hash % self._capacity
 
         # Reference to the bucket the key should be in
         bucket = self._buckets[index]
+        
         
         found = False
 
@@ -112,11 +114,13 @@ class HashMap:
             if(node.key == key):
                 found = True
                 node.value = value
+                self._size -= 1
                 break
 
         # Key not found inserting into bucket
         if found == False:
             bucket.insert(key, value)
+
 
     def empty_buckets(self) -> int:
         """
@@ -184,9 +188,22 @@ class HashMap:
 
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
+        Returns True if the given key is in the hash map, otherwise it returns False.
         """
-        pass
+
+        # Empty hash map, no keys
+        if(self._size == 0):
+            return False
+
+        # Getting index & bucket
+        index = self._hash_function(key) % self._capacity
+        bucket = self._buckets[index]
+
+        if(bucket.contains(key) is not None):
+            return True
+        
+        return False
+
 
     def remove(self, key: str) -> None:
         """
