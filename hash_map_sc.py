@@ -88,7 +88,9 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Updates the given key/value pair in the hash map.  If the given key already exists
+        it's value will be replaced with the one provided.  Otherwise if it does not, a new
+        key/value pair will be added to the hash map.
         """
 
         # Checking for resize
@@ -104,7 +106,7 @@ class HashMap:
         
         found = False
 
-        # May need to switch this to iterate a different way
+        # Iterating the linked list to check for the key
         for node in bucket:
 
             # Key found, replacing old value with new
@@ -126,6 +128,8 @@ class HashMap:
         
         empty = 0
 
+        # Iterating buckets and checking the length of the linked lists to determine
+        # if they are empty
         for i in range(0, self._buckets.length()):
             if(self._buckets[i].length() == 0):
                 empty += 1
@@ -142,13 +146,20 @@ class HashMap:
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        This method clears the contents of the hash map. 
         """
-        pass
+
+        for i in range(0, self._buckets.length()):
+            self._buckets[i] = LinkedList()
+
+        self._size = 0
+
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Changes the capacity of the hash table to the provided capacity.  If the capacity
+        given is not a prime number, the new capacity will be set to be the next prime number after
+        the given new capacity.
         """
 
         # Capacity must be >= 1
@@ -159,8 +170,10 @@ class HashMap:
         if(self._is_prime(new_capacity) == False):
             new_capacity = self._next_prime(new_capacity)
 
+        # Saving the old buckets 
         old_buckets = self._buckets
 
+        # Creating a new array, setting new_capacity, resetting size
         self._buckets = DynamicArray()
         self._capacity = new_capacity
         self._size = 0
@@ -169,13 +182,15 @@ class HashMap:
         while self._buckets.length() < new_capacity:
             self._buckets.append(LinkedList())
 
+        # Iterating old buckets
         for i in range(0, old_buckets.length()):
 
+            # If there are elements in the bucket
             if(old_buckets[i].length() > 0):
+
+                # Iterating the bucket's nodes and rehashing into the new hash map
                 for ele in old_buckets[i]:
                     self.put(ele.key, ele.value)
-
-
 
     def get(self, key: str):
         """
@@ -192,10 +207,12 @@ class HashMap:
         if(self._size == 0):
             return False
 
-        # Getting index & bucket
-        index = self._hash_function(key) % self._capacity
+        # Getting index & bucket reference
+        hash = self._hash_function(key) % self._capacity
+        index = hash % self._capacity
         bucket = self._buckets[index]
 
+        # Checking bucket for key
         if(bucket.contains(key) is not None):
             return True
         
@@ -228,6 +245,7 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
 
 if __name__ == "__main__":
 
+    '''
     print("\nPDF - put example 1")
     print("-------------------")
     m = HashMap(53, hash_function_1)
@@ -244,7 +262,6 @@ if __name__ == "__main__":
         if i % 10 == 9:
             print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
-    '''
     print("\nPDF - empty_buckets example 1")
     print("-----------------------------")
     m = HashMap(101, hash_function_1)
@@ -285,6 +302,7 @@ if __name__ == "__main__":
         if i % 10 == 0:
             print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
+    '''
     print("\nPDF - clear example 1")
     print("---------------------")
     m = HashMap(101, hash_function_1)
@@ -309,6 +327,7 @@ if __name__ == "__main__":
     m.clear()
     print(m.get_size(), m.get_capacity())
 
+    '''
     print("\nPDF - resize example 1")
     print("----------------------")
     m = HashMap(23, hash_function_1)
