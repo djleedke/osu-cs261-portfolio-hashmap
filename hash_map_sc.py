@@ -90,19 +90,54 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        print("put")
+        # Checking for resize
+        if(self.table_load() >= 1):
+            self.resize_table(self._capacity * 2)
+        
+        self._size += 1
+
+        # Hashing the key to get the index inside our current capacity
+        index = self._hash_function(key) % self._capacity
+
+        # Reference to the bucket the key should be in
+        bucket = self._buckets[index]
+        
+        found = False
+
+        # May need to switch this to iterate a different way
+        for node in bucket:
+
+            # Key found, replacing old value with new
+            if(node.key == key):
+                found = True
+                node.value = value
+                break
+
+        # Key not found inserting into bucket
+        if found == False:
+            bucket.insert(key, value)
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        This method returns the number of empty buckets in the hash table.
         """
-        pass
+        
+        empty = 0
+
+        for i in range(0, self._buckets.length()):
+            if(self._buckets[i].length() == 0):
+                empty += 1
+
+        return empty
+
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        This method returns the current has table load factor (# of elements / # of buckets).
         """
-        pass
+
+        return self._size / self._buckets.length()
 
     def clear(self) -> None:
         """
@@ -114,7 +149,32 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+
+        # Capacity must be >= 1
+        if(new_capacity < 1):
+            return
+        
+        # Checking if prime, otherwise getting the next prime
+        if(self._is_prime(new_capacity) == False):
+            new_capacity = self._next_prime(new_capacity)
+
+        old_buckets = self._buckets
+
+        self._buckets = DynamicArray()
+        self._capacity = new_capacity
+        self._size = 0
+
+        # Filling the new buckets with empty linked lists
+        while self._buckets.length() < new_capacity:
+            self._buckets.append(LinkedList())
+
+        for i in range(0, old_buckets.length()):
+
+            if(old_buckets[i].length() > 0):
+                for ele in old_buckets[i]:
+                    self.put(ele.key, ele.value)
+
+
 
     def get(self, key: str):
         """
@@ -170,6 +230,7 @@ if __name__ == "__main__":
         if i % 10 == 9:
             print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
+    '''
     print("\nPDF - empty_buckets example 1")
     print("-----------------------------")
     m = HashMap(101, hash_function_1)
@@ -350,3 +411,4 @@ if __name__ == "__main__":
         da = DynamicArray(case)
         mode, frequency = find_mode(da)
         print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
+    '''
