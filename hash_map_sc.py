@@ -250,9 +250,23 @@ class HashMap:
 
     def get_keys_and_values(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        This method returns a dynamic array where each index contains a tuple of a 
+        key/value pair stored in the hash map.
         """
-        pass
+
+        result = DynamicArray()
+
+        # Iterating buckets
+        for i in range(0, self._buckets.length()):
+
+            # Checking if bucket has nodes
+            if(self._buckets[i].length() != 0):
+
+                # Iterating nodes and appending key/value tuple to DA
+                for node in self._buckets[i]:
+                    result.append((node.key, node.value))
+
+        return result
 
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
@@ -424,7 +438,7 @@ if __name__ == "__main__":
         # NOT inserted keys must be absent
         result &= not m.contains_key(str(key + 1))
     print(result)
-    '''
+    
     print("\nPDF - remove example 1")
     print("----------------------")
     m = HashMap(53, hash_function_1)
@@ -447,6 +461,7 @@ if __name__ == "__main__":
     m.resize_table(2)
     print(m.get_keys_and_values())
 
+    '''
     print("\nPDF - find_mode example 1")
     print("-----------------------------")
     da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
