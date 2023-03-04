@@ -245,8 +245,8 @@ class HashMap:
         index = hash % self._capacity
         bucket = self._buckets[index]
 
-        bucket.remove(key)
-        self._size -= 1
+        if(bucket.remove(key)):
+            self._size -= 1
 
     def get_keys_and_values(self) -> DynamicArray:
         """
