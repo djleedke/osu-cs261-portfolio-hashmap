@@ -87,27 +87,89 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Updates the given key/value pair in the hash map.  If the given key already exists
+        it's value will be replaced with the one provided.  Otherwise if it does not, a new
+        key/value pair will be added to the hash map.
         """
-        pass
+
+        # Checking for resize
+        if(self.table_load() >= 0.5):
+            self.resize_table(self._capacity * 2)
+
+        # Hashing the key to get the index inside our current capacity
+        hash = self._hash_function(key)
+        init = hash % self._capacity
+        
+        j = 1
+
+        # Iterating the buckets that arent empty until we find one that is
+        while(self._buckets[init] is not None):
+
+            # If the key matches and the entry is not a tombstone, replace the value and leave
+            if(self._buckets[init].key == key and self._buckets[init].is_tombstone == False):
+                self._buckets[init].value = value
+                return
+
+            init = (init + j^2) % self._capacity
+            j += 1
+
+        self._size += 1
+        self._buckets[init] = HashEntry(key, value)
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        This method returns the current has table load factor (# of elements / # of buckets).
         """
-        pass
+
+        return self._size / self._buckets.length()
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        This method returns the number of empty buckets in the hash table.
         """
-        pass
+        
+        empty = 0
+
+        # Iterating buckets and checking if they are either empty or tombstones
+        for i in range(0, self._buckets.length()):
+            if(self._buckets[i] == None):
+                empty += 1
+            elif(self._buckets[i].is_tombstone):
+                empty += 1
+
+        return empty
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Changes the capacity of the hash table to the provided capacity.  If the capacity
+        given is not a prime number, the new capacity will be set to be the next prime number after
+        the given new capacity.
         """
-        pass
+
+        # Capacity must be greater than table size
+        if(new_capacity < self._size):
+            return
+        
+        # Checking if prime, otherwise getting the next prime
+        if(self._is_prime(new_capacity) == False):
+            new_capacity = self._next_prime(new_capacity)
+
+        # Saving old buckets
+        old_buckets = self._buckets
+        
+        # Creating new buckets
+        self._buckets = DynamicArray()
+        self._capacity = new_capacity
+        self._size = 0
+
+        # Filling empty buckets up to capacity
+        for i in range(0, new_capacity):
+            self._buckets.append(None)
+
+        for i in range(0, old_buckets.length()):
+            if(old_buckets[i] is not None):
+                self.put(old_buckets[i].key, old_buckets[i].value)
+
 
     def get(self, key: str) -> object:
         """
@@ -172,6 +234,7 @@ if __name__ == "__main__":
         if i % 10 == 9:
             print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
+    '''
     print("\nPDF - table_load example 1")
     print("--------------------------")
     m = HashMap(101, hash_function_1)
@@ -360,3 +423,4 @@ if __name__ == "__main__":
     print(m)
     for item in m:
         print('K:', item.key, 'V:', item.value)
+    '''

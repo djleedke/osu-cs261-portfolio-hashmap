@@ -314,7 +314,6 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
 
 if __name__ == "__main__":
 
-    '''
     print("\nPDF - put example 1")
     print("-------------------")
     m = HashMap(53, hash_function_1)
@@ -493,7 +492,6 @@ if __name__ == "__main__":
     m.resize_table(2)
     print(m.get_keys_and_values())
 
-    '''
     print("\nPDF - find_mode example 1")
     print("-----------------------------")
     da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
