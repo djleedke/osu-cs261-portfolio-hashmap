@@ -168,6 +168,7 @@ class HashMap:
             self._buckets.append(None)
 
         for i in range(0, old_buckets.length()):
+
             if(old_buckets[i] is not None and old_buckets[i].is_tombstone == False):
                 self.put(old_buckets[i].key, old_buckets[i].value)
 
@@ -379,6 +380,8 @@ if __name__ == "__main__":
             # NOT inserted keys must be absent
             result &= not m.contains_key(str(key + 1))
         print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
+
+    print('here')
     '''
     print("\nPDF - get example 1")
     print("-------------------")
