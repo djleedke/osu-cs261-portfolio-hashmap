@@ -200,9 +200,33 @@ class HashMap:
 
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
+        This method returns True if the given key is in the hash map, otherwise it returns
+        False.
         """
-        pass
+
+        # Empty
+        if(self._size == 0):
+            return False
+        
+        # Hashing the key to get the index inside our current capacity
+        hash = self._hash_function(key)
+        init = hash % self._capacity
+
+        i = init
+        j = 1
+
+        # Iterating the buckets that arent empty until we find one that is
+        while(self._buckets[i] is not None):
+
+            # If the key matches and the entry is not a tombstone, key exists
+            if(self._buckets[i].key == key and self._buckets[i].is_tombstone == False):
+                return True
+
+            i = (init + j**2) % self._capacity
+            j += 1
+
+        # Empty bucket was found meaning key did not exist
+        return False
 
     def remove(self, key: str) -> None:
         """
@@ -321,7 +345,7 @@ if __name__ == "__main__":
         m.put('key' + str(i), i * 100)
         if i % 30 == 0:
             print(m.empty_buckets(), m.get_size(), m.get_capacity())
-
+    '''
     print("\nPDF - resize example 1")
     print("----------------------")
     m = HashMap(23, hash_function_1)
@@ -355,7 +379,7 @@ if __name__ == "__main__":
             # NOT inserted keys must be absent
             result &= not m.contains_key(str(key + 1))
         print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
-
+    '''
     print("\nPDF - get example 1")
     print("-------------------")
     m = HashMap(31, hash_function_1)
@@ -401,7 +425,7 @@ if __name__ == "__main__":
         # NOT inserted keys must be absent
         result &= not m.contains_key(str(key + 1))
     print(result)
-    '''
+    
     print("\nPDF - remove example 1")
     print("----------------------")
     m = HashMap(53, hash_function_1)
@@ -411,7 +435,7 @@ if __name__ == "__main__":
     m.remove('key1')
     print(m.get('key1'))
     m.remove('key4')
-    '''
+    
     print("\nPDF - clear example 1")
     print("---------------------")
     m = HashMap(101, hash_function_1)
