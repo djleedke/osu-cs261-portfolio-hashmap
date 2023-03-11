@@ -274,9 +274,19 @@ class HashMap:
     
     def get_keys_and_values(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        This method returns a dynamic array where each index contains a tuple of a 
+        key/value pair stored in the hash map.
         """
-        pass
+
+        result = DynamicArray()
+
+        for i in range(0, self._buckets.length()):
+
+            # We only want non-empty buckets that are not tombstones
+            if(self._buckets[i] is not None and self._buckets[i].is_tombstone == False):
+                result.append((self._buckets[i].key, self._buckets[i].value))
+
+        return result
 
     def __iter__(self):
         """
@@ -352,7 +362,6 @@ if __name__ == "__main__":
         m.put('key' + str(i), i * 100)
         if i % 30 == 0:
             print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    '''
     print("\nPDF - resize example 1")
     print("----------------------")
     m = HashMap(23, hash_function_1)
@@ -387,7 +396,6 @@ if __name__ == "__main__":
             result &= not m.contains_key(str(key + 1))
         print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
 
-    '''
     print("\nPDF - get example 1")
     print("-------------------")
     m = HashMap(31, hash_function_1)
@@ -467,7 +475,7 @@ if __name__ == "__main__":
     print(m.get_size(), m.get_capacity())
     m.clear()
     print(m.get_size(), m.get_capacity())
-
+    '''
     print("\nPDF - get_keys_and_values example 1")
     print("------------------------")
     m = HashMap(11, hash_function_2)
@@ -482,7 +490,7 @@ if __name__ == "__main__":
     m.remove('1')
     m.resize_table(12)
     print(m.get_keys_and_values())
-
+    '''
     print("\nPDF - __iter__(), __next__() example 1")
     print("---------------------")
     m = HashMap(10, hash_function_1)
