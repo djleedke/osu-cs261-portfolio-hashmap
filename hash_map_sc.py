@@ -271,12 +271,44 @@ class HashMap:
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
     """
-    TODO: Write this implementation
+    Function that receives a DynamicArray and returns a tuple containing a
+    DynamicArray comprising the mode (most occurring) value/s of the array 
+    and an integer that represents the highest frequency.  If there is more 
+    than one value with the highest frequency, all of the values will be included
+    in the array.
     """
     # if you'd like to use a hash map,
     # use this instance of your Separate Chaining HashMap
     map = HashMap()
+    result_da = DynamicArray()
 
+    # Iterating array, filling hash map with each key and its frequency
+    for i in range(0, da.length()):
+        
+        if(map.contains_key(da[i])):
+            # Key exists already, incrementing the value
+            map.put(da[i], map.get(da[i]) + 1)
+        else:
+            # Key does not exists, adding w/ value of 1
+            map.put(da[i], 1)
+
+    # Gettings list of all keys and values into an array
+    counts = map.get_keys_and_values()
+    max_freq = 0
+
+    # Iterating to find the max frequency
+    for i in range(0, counts.length()):
+        if(counts[i][1] > max_freq):
+            max_freq = counts[i][1]
+
+    # Iterating to fill the result array with the max frequency keys
+    for i in range(0, counts.length()):
+        if(counts[i][1] == max_freq):
+            result_da.append(counts[i][0])
+
+    return (result_da, max_freq)
+
+    
 
 # ------------------- BASIC TESTING ---------------------------------------- #
 
@@ -448,7 +480,7 @@ if __name__ == "__main__":
     m.remove('key1')
     print(m.get('key1'))
     m.remove('key4')
-    '''
+    
     print("\nPDF - get_keys_and_values example 1")
     print("------------------------")
     m = HashMap(11, hash_function_2)
@@ -480,4 +512,4 @@ if __name__ == "__main__":
         da = DynamicArray(case)
         mode, frequency = find_mode(da)
         print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
-    '''
+    
