@@ -292,13 +292,29 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+
+        self._index = 0
+
+        return self
 
     def __next__(self):
         """
         TODO: Write this implementation
         """
-        pass
+
+        try:
+            # Moving through the empty buckets and tombstones
+            while(self._buckets[self._index] is None or self._buckets[self._index].is_tombstone == True):
+                self._index += 1
+
+            # Found our next value
+            value = self._buckets[self._index]
+        
+        except DynamicArrayException:
+            raise StopIteration
+
+        self._index += 1
+        return value
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
@@ -475,7 +491,7 @@ if __name__ == "__main__":
     print(m.get_size(), m.get_capacity())
     m.clear()
     print(m.get_size(), m.get_capacity())
-    '''
+    
     print("\nPDF - get_keys_and_values example 1")
     print("------------------------")
     m = HashMap(11, hash_function_2)
@@ -510,4 +526,4 @@ if __name__ == "__main__":
     print(m)
     for item in m:
         print('K:', item.key, 'V:', item.value)
-    '''
+    
