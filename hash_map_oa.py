@@ -106,7 +106,7 @@ class HashMap:
         # Iterating the buckets that arent empty until we find one that is
         while(self._buckets[i] is not None):
 
-            # If the key matches and the entry is not a tombstone, replace the value and leave
+            # If the key matches replace the value
             if(self._buckets[i].key == key):
 
                 self._buckets[i].value = value
@@ -139,9 +139,8 @@ class HashMap:
 
         # Iterating buckets and checking if they are either empty or tombstones
         for i in range(0, self._buckets.length()):
-            if(self._buckets[i] == None):
-                empty += 1
-            elif(self._buckets[i].is_tombstone):
+
+            if(self._buckets[i] is None or self._buckets[i].is_tombstone):
                 empty += 1
 
         return empty
@@ -173,11 +172,11 @@ class HashMap:
         for i in range(0, new_capacity):
             self._buckets.append(None)
 
+        # Iterating old buckets, adding entries that are not tombstones
         for i in range(0, old_buckets.length()):
 
             if(old_buckets[i] is not None and old_buckets[i].is_tombstone == False):
                 self.put(old_buckets[i].key, old_buckets[i].value)
-
 
     def get(self, key: str) -> object:
         """
@@ -202,7 +201,7 @@ class HashMap:
             i = (init + j**2) % self._capacity
             j += 1
 
-        # Empty bucket was found meaning key did not exist
+        # Empty bucket was found, key did not exist
         return None
 
     def contains_key(self, key: str) -> bool:
@@ -290,7 +289,8 @@ class HashMap:
 
     def __iter__(self):
         """
-        TODO: Write this implementation
+        Enables the hash map to iterate across itself by initializing an index variable 
+        to track progress through the map's contents.
         """
 
         self._index = 0
@@ -299,7 +299,7 @@ class HashMap:
 
     def __next__(self):
         """
-        TODO: Write this implementation
+        Returns the next item in the hash map based on the current location of the iterator.
         """
 
         try:
@@ -307,21 +307,20 @@ class HashMap:
             while(self._buckets[self._index] is None or self._buckets[self._index].is_tombstone == True):
                 self._index += 1
 
-            # Found our next value
+            # Found our next value to return
             value = self._buckets[self._index]
         
+        # If we went out of bounds we stop iterating
         except DynamicArrayException:
             raise StopIteration
 
         self._index += 1
         return value
 
-
 # ------------------- BASIC TESTING ---------------------------------------- #
 
 if __name__ == "__main__":
 
-    '''
     print("\nPDF - put example 1")
     print("-------------------")
     m = HashMap(53, hash_function_1)
@@ -506,7 +505,7 @@ if __name__ == "__main__":
     m.remove('1')
     m.resize_table(12)
     print(m.get_keys_and_values())
-    '''
+    
     print("\nPDF - __iter__(), __next__() example 1")
     print("---------------------")
     m = HashMap(10, hash_function_1)
