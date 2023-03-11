@@ -92,6 +92,9 @@ class HashMap:
         key/value pair will be added to the hash map.
         """
 
+        if(key == 'str14'):
+            print('hey')
+
         # Checking for resize
         if(self.table_load() >= 0.5):
             self.resize_table(self._capacity * 2)
@@ -111,7 +114,7 @@ class HashMap:
                 self._buckets[i].value = value
                 return
 
-            i = (init + j^2) % self._capacity
+            i = (init + j**2) % self._capacity
             j += 1
 
         self._size += 1
