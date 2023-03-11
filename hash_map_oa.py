@@ -100,17 +100,18 @@ class HashMap:
         hash = self._hash_function(key)
         init = hash % self._capacity
         
+        i = init
         j = 1
 
         # Iterating the buckets that arent empty until we find one that is
-        while(self._buckets[init] is not None):
+        while(self._buckets[i] is not None):
 
             # If the key matches and the entry is not a tombstone, replace the value and leave
-            if(self._buckets[init].key == key and self._buckets[init].is_tombstone == False):
-                self._buckets[init].value = value
+            if(self._buckets[i].key == key and self._buckets[init].is_tombstone == False):
+                self._buckets[i].value = value
                 return
 
-            init = (init + j^2) % self._capacity
+            i = (init + j^2) % self._capacity
             j += 1
 
         self._size += 1
