@@ -107,7 +107,7 @@ class HashMap:
         while(self._buckets[i] is not None):
 
             # If the key matches and the entry is not a tombstone, replace the value and leave
-            if(self._buckets[i].key == key and self._buckets[init].is_tombstone == False):
+            if(self._buckets[i].key == key and self._buckets[i].is_tombstone == False):
                 self._buckets[i].value = value
                 return
 
@@ -115,7 +115,7 @@ class HashMap:
             j += 1
 
         self._size += 1
-        self._buckets[init] = HashEntry(key, value)
+        self._buckets[i] = HashEntry(key, value)
 
     def table_load(self) -> float:
         """
