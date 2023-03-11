@@ -92,9 +92,6 @@ class HashMap:
         key/value pair will be added to the hash map.
         """
 
-        if(key == 'str14'):
-            print('hey')
-
         # Checking for resize
         if(self.table_load() >= 0.5):
             self.resize_table(self._capacity * 2)
@@ -171,7 +168,7 @@ class HashMap:
             self._buckets.append(None)
 
         for i in range(0, old_buckets.length()):
-            if(old_buckets[i] is not None):
+            if(old_buckets[i] is not None and old_buckets[i].is_tombstone == False):
                 self.put(old_buckets[i].key, old_buckets[i].value)
 
 
@@ -195,10 +192,15 @@ class HashMap:
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        This method clears the contents of the hash map. 
         """
-        pass
 
+        # Setting each bucket to None
+        for i in range(0, self._buckets.length()):
+            self._buckets[i] = None
+
+        self._size = 0
+    
     def get_keys_and_values(self) -> DynamicArray:
         """
         TODO: Write this implementation
@@ -222,6 +224,7 @@ class HashMap:
 
 if __name__ == "__main__":
 
+    '''
     print("\nPDF - put example 1")
     print("-------------------")
     m = HashMap(53, hash_function_1)
@@ -238,7 +241,7 @@ if __name__ == "__main__":
         if i % 10 == 9:
             print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
-    '''
+    
     print("\nPDF - table_load example 1")
     print("--------------------------")
     m = HashMap(101, hash_function_1)
@@ -257,7 +260,7 @@ if __name__ == "__main__":
         m.put('key' + str(i), i * 100)
         if i % 10 == 0:
             print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
-
+    
     print("\nPDF - empty_buckets example 1")
     print("-----------------------------")
     m = HashMap(101, hash_function_1)
@@ -368,7 +371,7 @@ if __name__ == "__main__":
     m.remove('key1')
     print(m.get('key1'))
     m.remove('key4')
-
+    '''
     print("\nPDF - clear example 1")
     print("---------------------")
     m = HashMap(101, hash_function_1)
@@ -393,6 +396,7 @@ if __name__ == "__main__":
     m.clear()
     print(m.get_size(), m.get_capacity())
 
+    '''
     print("\nPDF - get_keys_and_values example 1")
     print("------------------------")
     m = HashMap(11, hash_function_2)
