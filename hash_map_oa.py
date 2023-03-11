@@ -108,8 +108,13 @@ class HashMap:
 
             # If the key matches and the entry is not a tombstone, replace the value and leave
             if(self._buckets[i].key == key):
+
                 self._buckets[i].value = value
-                self._buckets[i].is_tombstone = False
+
+                # If the key existed before and was a tombstone, now bringing the tombstone back to life
+                if(self._buckets[i].is_tombstone):
+                    self._buckets[i].is_tombstone = False
+                    self._size += 1
                 return
 
             i = (init + j**2) % self._capacity
