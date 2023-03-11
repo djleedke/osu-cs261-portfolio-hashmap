@@ -107,8 +107,9 @@ class HashMap:
         while(self._buckets[i] is not None):
 
             # If the key matches and the entry is not a tombstone, replace the value and leave
-            if(self._buckets[i].key == key and self._buckets[i].is_tombstone == False):
+            if(self._buckets[i].key == key):
                 self._buckets[i].value = value
+                self._buckets[i].is_tombstone = False
                 return
 
             i = (init + j**2) % self._capacity
@@ -381,7 +382,6 @@ if __name__ == "__main__":
             result &= not m.contains_key(str(key + 1))
         print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
 
-    print('here')
     '''
     print("\nPDF - get example 1")
     print("-------------------")
