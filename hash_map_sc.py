@@ -139,7 +139,7 @@ class HashMap:
 
     def table_load(self) -> float:
         """
-        This method returns the current has table load factor (# of elements / # of buckets).
+        This method returns the current table load factor (# of elements / # of buckets).
         """
 
         return self._size / self._buckets.length()
